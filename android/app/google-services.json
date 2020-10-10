@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "591589957124",
+    "firebase_url": "https://eshop-e25f5.firebaseio.com",
+    "project_id": "eshop-e25f5",
+    "storage_bucket": "eshop-e25f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591589957124:android:cea91983e4659baca7df51",
+        "android_client_info": {
+          "package_name": "com.praveen.eshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591589957124-ks9f17n5be0d9f49qmv8ghnss4ef315i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB9Wb7EzlQP8_uYkFYRxrcZy7qTKMJAC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591589957124-ks9f17n5be0d9f49qmv8ghnss4ef315i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
