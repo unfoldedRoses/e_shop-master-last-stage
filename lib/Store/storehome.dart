@@ -30,43 +30,53 @@ class _StoreHomeState extends State<StoreHome> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF21BFBD),
-        appBar: AppBar(
-          brightness: Brightness.light,
-          backgroundColor: Color(0xFF21BFBD),
-          title: Text('Cano_eshop'),
-          centerTitle: false,
-          actions: [
-            Stack(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.shopping_basket),
-                  onPressed: () {
-                    Route route = MaterialPageRoute(builder: (c) => CartPage());
-                    Navigator.pushReplacement(context, route);
-                  },
-                ),
-                Positioned(
-                    child: Stack(children: [
-                  Icon(
-                    Icons.brightness_1,
-                    size: 20.0,
-                    color: Colors.green,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: AppBar(
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[Colors.deepPurpleAccent, Colors.blue])),
+            ),
+            brightness: Brightness.light,
+            backgroundColor: Color(0xFF21BFBD),
+            title: Text('Cano_eshop'),
+            centerTitle: false,
+            actions: [
+              Stack(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.shopping_basket),
+                    onPressed: () {
+                      Route route =
+                          MaterialPageRoute(builder: (c) => CartPage());
+                      Navigator.pushReplacement(context, route);
+                    },
                   ),
                   Positioned(
-                    top: 3.0,
-                    bottom: 4.0,
-                    child: Consumer<CartItemCounter>(
-                        builder: (context, counter, _) {
-                      style:
-                      TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500);
-                    }),
-                  ),
-                ]))
-              ],
-            ),
-          ],
+                      child: Stack(children: [
+                    Icon(
+                      Icons.brightness_1,
+                      size: 20.0,
+                      color: Colors.green,
+                    ),
+                    Positioned(
+                      top: 3.0,
+                      bottom: 4.0,
+                      child: Consumer<CartItemCounter>(
+                          builder: (context, counter, _) {
+                        style:
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500);
+                      }),
+                    ),
+                  ]))
+                ],
+              ),
+            ],
+          ),
         ),
-
         drawer: Drawer(
           child: new ListView(
             children: <Widget>[
@@ -144,23 +154,42 @@ class _StoreHomeState extends State<StoreHome> {
                   title: new Text("Log Me Out!"),
                   trailing: new Icon(Icons.arrow_upward),
                   onTap: () {
-                    EcommerceApp.auth.signOut().then((c){
-                      Route route=MaterialPageRoute(builder: (c)=>AuthenticScreen());
+                    EcommerceApp.auth.signOut().then((c) {
+                      Route route =
+                          MaterialPageRoute(builder: (c) => AuthenticScreen());
                       Navigator.pushReplacement(context, route);
                     });
-
-
                   }),
             ],
           ),
         ),
-        body: new  Container(
-    height: MediaQuery.of(context).size.height - 10.0,
-    decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.only(topLeft: Radius.circular(90.0)),
-    ),
-      ),
+        body: new Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [
+                0.1,
+                0.3,
+                0.7,
+                1
+              ],
+                  colors: [
+                Colors.green,
+                Colors.blue,
+                Colors.orange,
+                Colors.pink
+              ])),
+          child: Center(
+            child: Text(
+              'Gradients are cool!',
+              style: TextStyle(
+                fontSize: 35,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

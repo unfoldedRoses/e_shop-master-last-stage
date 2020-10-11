@@ -208,7 +208,7 @@ class _LoginState extends State<Login> {
                                       builder: (context) => AdminSignInPage()));
                             },
                             child: Text(
-                              "Sign up",
+                              "Admin Login Here!",
                               style: TextStyle(
                                   fontWeight: FontWeight.w600, fontSize: 18),
                             ),
