@@ -12,6 +12,7 @@ import '../Widgets/myDrawer.dart';
 import '../Widgets/searchBox.dart';
 import '../Models/item.dart';
 
+
 double width;
 
 class StoreHome extends StatefulWidget {
@@ -25,47 +26,107 @@ class _StoreHomeState extends State<StoreHome> {
     width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-          appBar:AppBar(
-            leading: Icon(Icons.menu),
-            title: Text('Cano_eshop'),
-            actions: [
+  backgroundColor:  Color(0xFF035AA6),
+        appBar: AppBar(
+          backgroundColor: Color(0xFF035AA6),
+          title: Text('Cano_eshop'),
+          centerTitle: false,
+          actions: [
+            Stack(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.shopping_basket),
+                  onPressed: () {
+                    Route route = MaterialPageRoute(builder: (c) => CartPage());
+                    Navigator.pushReplacement(context, route);
+                  },
+                ),
+                Positioned(
+                    child: Stack(children: [
+                  Icon(
+                    Icons.brightness_1,
+                    size: 20.0,
+                    color: Colors.green,
+                  ),
+                  Positioned(
+                    top: 3.0,
+                    bottom: 4.0,
+                    child: Consumer<CartItemCounter>(
+                        builder: (context, counter, _) {
+                      style:
+                      TextStyle(fontSize: 17.0, fontWeight: FontWeight.w500);
+                    }),
+                  ),
+                ]))
+              ],
+            ),
+          ],
+        ),
+        drawer: Drawer(
+          child: new ListView(
+            children: <Widget>[
+              new UserAccountsDrawerHeader(
 
-
-              Stack(
-
-                children:[IconButton(
-                  icon:Icon(Icons.shopping_basket),
-                onPressed:(){
-                  Route route=MaterialPageRoute(builder:(c)=>CartPage());
-                  Navigator.pushReplacement(context,route);
-              },
+                accountName: new Text(EcommerceApp.sharedPreferences.getString(EcommerceApp.userName),
+                style:TextStyle(color:Colors.black,fontSize: 37.0,fontFamily: "Signatra"),
+                ),
+                accountEmail: new Text(EcommerceApp.sharedPreferences.getString(EcommerceApp.userEmail),
+                  style:TextStyle(color:Colors.black,fontSize: 20.0,fontFamily: "Signatra"),
+                ),
+                currentAccountPicture: Container(
+                  child: new CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl),
+                    ),
+                  ),
+                ),
 
               ),
-                  Positioned(
-                    child:Stack(
-                      children:[
-                        Icon(
-                Icons.brightness_1,
-                          size:20.0,
-                          color:Colors.green,
-                        ),
-                        Positioned(
-                          top:3.0,
-                          bottom:4.0,
-                          child:Consumer<CartItemCounter>(
-                            builder:(context,counter,_){
-                            style:TextStyle(fontSize: 17.0,fontWeight: FontWeight.w500);
-                            }
-                          ),
-                        ),
-                      ]
-                    )
-                  )
-
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
+              new ListTile(
+                title: new Text("data"),
+                trailing: new Icon(Icons.arrow_upward),
+              ),
             ],
           ),
-      ],
-      ),
+        ),
+        body: new Container(
+          child: new Center(
+            child: new Text("Home PAge"),
+          ),
+        ),
       ),
     );
   }

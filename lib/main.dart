@@ -34,8 +34,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           title: 'e-Shop',
           debugShowCheckedModeBanner: false,
+
           theme: ThemeData(
-            primaryColor: Colors.green,
+            primaryColor: Colors.deepPurpleAccent,
+
           ),
           home: SplashScreen()
       ),
@@ -72,22 +74,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-              colors: [
-                Colors.pink,
-                Colors.lightGreenAccent,
-              ],
-              begin: const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0, 1.0],
-              tileMode: TileMode.clamp),
-        ),
+
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              //Image.asset('images/welcome.png'),
+              Image.asset('images/1.png'),
               SizedBox(height: 20.0,),
               Text("World's Largest & Number One Online Shop.", style: TextStyle(color: Colors.white),),
             ],

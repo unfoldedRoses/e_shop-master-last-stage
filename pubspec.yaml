@@ -29,6 +29,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   simple_animations: ^1.3.3
+  convex_bottom_bar: ^2.5.1+1
+
 
 flutter:
   uses-material-design: true
@@ -41,3 +43,4 @@ flutter:
     - assets/
     - assets/Illustration.png
     - assets/canos.png
+    - images/1.png
