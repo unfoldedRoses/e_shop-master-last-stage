@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
 
           theme: ThemeData(
-            primaryColor: Colors.deepPurpleAccent,
+            primaryColor: Colors.tealAccent,
 
           ),
           home: SplashScreen()
