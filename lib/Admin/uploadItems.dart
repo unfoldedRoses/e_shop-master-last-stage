@@ -17,6 +17,7 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage>
     with AutomaticKeepAliveClientMixin<UploadPage> {
   bool get wantKeepAlive => true;
+  File file;
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +121,7 @@ class _UploadPageState extends State<UploadPage>
                       color: Colors.deepPurpleAccent,
                       fontWeight: FontWeight.w900),
                 ),
+                  onPressed: captPhoto,
               ),
               SimpleDialogOption(
                 child: Text(
@@ -128,6 +130,7 @@ class _UploadPageState extends State<UploadPage>
                       color: Colors.deepPurpleAccent,
                       fontWeight: FontWeight.w900),
                 ),
+                onPressed: captPhotogallery,
               ),
               SimpleDialogOption(
                 child: Text(
@@ -140,5 +143,21 @@ class _UploadPageState extends State<UploadPage>
             ],
           );
         });
+  }
+
+  captPhoto() async{
+Navigator.pop(context);
+File ImageFile=await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 669.0,maxWidth:970.0);
+setState(() {
+  file=ImageFile;
+});
+  }
+  captPhotogallery() async{
+    Navigator.pop(context);
+    File ImageFile=await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      file=ImageFile;
+    });
+
   }
 }
