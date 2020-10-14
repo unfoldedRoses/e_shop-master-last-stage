@@ -18,10 +18,19 @@ class _UploadPageState extends State<UploadPage>
     with AutomaticKeepAliveClientMixin<UploadPage> {
   bool get wantKeepAlive => true;
   File file;
+  TextEditingController _descriptionTextEditingController =
+      TextEditingController();
+  TextEditingController _priceTextEditingController = TextEditingController();
+  TextEditingController _titleTextEditingController = TextEditingController();
+  TextEditingController _shortInfoTextEditingController =
+      TextEditingController();
+
+  String productId = DateTime.now().millisecondsSinceEpoch.toString();
+  bool uploading = false;
 
   @override
   Widget build(BuildContext context) {
-    return displayAdminHomeScreen();
+    return file == null ? displayAdminHomeScreen() : displayUploadFormScreen();
   }
 
   displayAdminHomeScreen() {
@@ -121,7 +130,7 @@ class _UploadPageState extends State<UploadPage>
                       color: Colors.deepPurpleAccent,
                       fontWeight: FontWeight.w900),
                 ),
-                  onPressed: captPhoto,
+                onPressed: captPhoto,
               ),
               SimpleDialogOption(
                 child: Text(
@@ -145,19 +154,217 @@ class _UploadPageState extends State<UploadPage>
         });
   }
 
-  captPhoto() async{
-Navigator.pop(context);
-File ImageFile=await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 669.0,maxWidth:970.0);
-setState(() {
-  file=ImageFile;
-});
-  }
-  captPhotogallery() async{
+  captPhoto() async {
     Navigator.pop(context);
-    File ImageFile=await ImagePicker.pickImage(source: ImageSource.gallery);
+    File ImageFile = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 669.0, maxWidth: 970.0);
     setState(() {
-      file=ImageFile;
+      file = ImageFile;
+    });
+  }
+
+  captPhotogallery() async {
+    Navigator.pop(context);
+    File ImageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      file = ImageFile;
+    });
+  }
+
+  displayUploadFormScreen() {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[Colors.deepPurpleAccent, Colors.blue]),
+            ),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: clearFormField,
+          ),
+          title: Text(
+            "new Product",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.w500),
+          ),
+          actions: [
+            FlatButton(
+              child: Text(
+                "ADD",
+                style: TextStyle(color: Colors.white, fontSize: 18.0),
+              ),
+              onPressed: uploading ? null : () => uploadImageAndSaveItem(),
+            ),
+          ],
+          brightness: Brightness.light,
+          backgroundColor: Color(0xFF21BFBD),
+          centerTitle: false,
+        ),
+      ),
+      body: ListView(
+        children: [
+          uploading ? circularProgress() : Text(""),
+          Container(
+            height: 230.0,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: FileImage(file), fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(top: 12.0)),
+          ListTile(
+            leading: Icon(
+              Icons.perm_device_information,
+              color: Colors.pink,
+            ),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.amber),
+                controller: _shortInfoTextEditingController,
+                decoration: InputDecoration(
+                  hintText: "Short Info",
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.tealAccent),
+          ListTile(
+            leading: Icon(
+              Icons.perm_device_information,
+              color: Colors.pink,
+            ),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.amber),
+                controller: _titleTextEditingController,
+                decoration: InputDecoration(
+                  hintText: "title",
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.tealAccent),
+          ListTile(
+            leading: Icon(
+              Icons.perm_device_information,
+              color: Colors.pink,
+            ),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                style: TextStyle(color: Colors.amber),
+                controller: _descriptionTextEditingController,
+                decoration: InputDecoration(
+                  hintText: "Description",
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.tealAccent),
+          ListTile(
+            leading: Icon(
+              Icons.perm_device_information,
+              color: Colors.pink,
+            ),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.deepPurpleAccent),
+                controller: _priceTextEditingController,
+                decoration: InputDecoration(
+                  hintText: "Price",
+                  hintStyle: TextStyle(color: Colors.deepPurpleAccent),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ),
+          Divider(color: Colors.tealAccent),
+        ],
+      ),
+    );
+  }
+
+  clearFormField() {
+    setState(() {
+      file = null;
+      _descriptionTextEditingController.clear();
+      _priceTextEditingController.clear();
+      _shortInfoTextEditingController.clear();
+      _titleTextEditingController.clear();
+    });
+  }
+
+  uploadImageAndSaveItem() async {
+    setState(() {
+      uploading = true;
     });
 
+    String imageDownloadUrl = await uploadImage(file);
+
+    saveItemInfo(imageDownloadUrl);
+  }
+
+  Future<String> uploadImage(mFileImage) async {
+    final StorageReference storageReference =
+        FirebaseStorage.instance.ref().child("items");
+    StorageUploadTask uploadTask =
+        storageReference.child("product_$productId.jpg").putFile(mFileImage);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  saveItemInfo(String downloadUrl) {
+    final itemRef = Firestore.instance.collection("items");
+    itemRef.document(productId).setData({
+      "shortInfo": _shortInfoTextEditingController.text.trim(),
+      "longDescription": _descriptionTextEditingController.text.trim(),
+      "price": _priceTextEditingController.text.trim(),
+      "publishedDate": DateTime.now(),
+      "status": "available",
+      "thumbnailUrl": downloadUrl,
+      "title": _titleTextEditingController.text.trim(),
+    });
+
+    setState(
+      () {
+        file = null;
+        uploading = false;
+        productId = DateTime.now().millisecondsSinceEpoch.toString();
+        _descriptionTextEditingController.clear();
+        _titleTextEditingController.clear();
+        _shortInfoTextEditingController.clear();
+        _priceTextEditingController.clear();
+      },
+    );
   }
 }
