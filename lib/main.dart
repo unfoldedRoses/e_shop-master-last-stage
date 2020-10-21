@@ -1,7 +1,6 @@
-
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_shop/Counters/BookQuantity.dart';
+import 'package:e_shop/Counters/ItemQuantity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,20 +26,17 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CartItemCounter()),
-        ChangeNotifierProvider(create: (_) => BookQuantity()),
+        ChangeNotifierProvider(create: (_) => ItemQuantity()),
         ChangeNotifierProvider(create: (_) => AddressChanger()),
         ChangeNotifierProvider(create: (_) => TotalAmount()),
       ],
       child: MaterialApp(
           title: 'e-Shop',
           debugShowCheckedModeBanner: false,
-
           theme: ThemeData(
-            primaryColor: Colors.tealAccent,
-
+            primarySwatch: Colors.blue,
           ),
-          home: SplashScreen()
-      ),
+          home: SplashScreen()),
     );
   }
 }
@@ -74,14 +70,18 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset('images/1.png'),
-              SizedBox(height: 20.0,),
-              Text("World's Largest & Number One Online Shop.", style: TextStyle(color: Colors.white),),
+              SizedBox(
+                height: 20.0,
+              ),
+              Text(
+                "World's Largest & Number One Online Shop.",
+                style: TextStyle(color: Colors.white),
+              ),
             ],
           ),
         ),

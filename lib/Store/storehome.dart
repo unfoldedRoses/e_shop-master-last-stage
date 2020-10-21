@@ -60,11 +60,12 @@ class _StoreHomeState extends State<StoreHome> {
                     Icon(
                       Icons.brightness_1,
                       size: 20.0,
-                      color: Colors.green,
+                      color: Colors.white,
                     ),
                     Positioned(
                       top: 3.0,
                       bottom: 4.0,
+                      left: 3.0,
                       child: Consumer<CartItemCounter>(
                           builder: (context, counter, _) {
                         style:
@@ -163,33 +164,32 @@ class _StoreHomeState extends State<StoreHome> {
             ],
           ),
         ),
-        body: new Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [
-                0.1,
-                0.3,
-                0.7,
-                1
-              ],
-                  colors: [
-                Colors.green,
-                Colors.blue,
-                Colors.orange,
-                Colors.pink
-              ])),
-          child: Center(
-            child: Text(
-              'Gradients are cool!',
-              style: TextStyle(
-                fontSize: 35,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+        body: CustomScrollView(slivers: [
+          StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance
+                  .collection("items")
+                  .limit(2)
+                  .orderBy("publishedDate", descending: true)
+                  .snapshots(),
+              builder: (context, dataSnapshot) {
+                return !dataSnapshot.hasData
+                    ? SliverToBoxAdapter(
+                        child: Center(
+                          child: circularProgress(),
+                        ),
+                      )
+                    : SliverStaggeredGrid.countBuilder(
+                        crossAxisCount: 1,
+                        staggeredTileBuilder: (c) => StaggeredTile.fit(1),
+                        itemBuilder: (context, index) {
+                          ItemModel model = ItemModel.fromJson(
+                              dataSnapshot.data.documents[index].data);
+                          return sourceInfo(model, context);
+                        },
+                        itemCount: dataSnapshot.data.documents.length,
+                      );
+              })
+        ]),
       ),
     );
   }
@@ -197,7 +197,73 @@ class _StoreHomeState extends State<StoreHome> {
 
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
-  return InkWell();
+  return InkWell(
+    child: Container(
+      padding: EdgeInsets.all(6),
+      margin: EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.2),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          bottomLeft: Radius.circular(12),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Image.network(model.thumbnailUrl),
+          SizedBox(width: 16),
+          Expanded(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              SizedBox(height: 15.0),
+              Container(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      model.title,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
+                    ))
+                  ],
+                ),
+              ),
+              SizedBox(height: 5.0),
+              Container(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                        child: Text(
+                      model.shortInfo,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ),
+                    ))
+                  ],
+                ),
+              ),
+            ]),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 4),
+              Row(
+                children: <Widget>[
+                  SizedBox(width: 16),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
 }
 
 Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
