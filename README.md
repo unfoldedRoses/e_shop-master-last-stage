@@ -1,7 +1,1 @@
-
-
-
-Flutter Android & iOS eCommerce App like Amazon | FlipKart | AliExpress | Daraz using Firebase Firestore.
-Developed by: Coding Cafe
-
-Mail us at: alizeb875@gmail.com
+this is a ecom water supply app where people around the city can buy water cans with discounts and much more. with dilevry boys section
